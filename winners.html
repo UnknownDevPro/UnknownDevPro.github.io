@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winners Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="center-content">
+        <h1>🎉 Congratulations! 🎉</h1>
+        <p>Thanks to everyone who participated in solving the puzzle. Make sure to tell Mau that you FINISHED providing the code <u><i>JIB</i></u> (stands for Jack is back)!</p>
+
+        <section class="credits">
+            <h2>Credits</h2>
+            <ul>
+                <li>Made by: Mauricio (Aka: Max_Dev)</li>
+            </ul>
+        </section>
+
+        <section class="interactive-section">
+            <h2>Interactive Section</h2>
+            <p>Click the button below to reveal a surprise!</p>
+            <button onclick="revealSurprise()">Reveal</button>
+            <p id="surpriseMessage" style="display: none;">Never gonna give you up! Never gonna let you down. -- Wise words by: Rick Astly</p>
+            <br>
+            <p>🟢 Waiting for others (Havent finished)</p>
+        </section>
+    </div>
+    <script>
+        // JavaScript to redirect after 5 seconds
+        setTimeout(function() {
+            window.location.href = 'winners.html'; // Change this URL to the page you want to redirect to
+        }, 10000); // 1000 milliseconds = 1 seconds
+    </script>
+
+    <script src="js/win-script.js"></script>
+</body>
+</html>

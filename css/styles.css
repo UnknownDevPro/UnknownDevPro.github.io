@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.center-content {
+    text-align: center;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.underline {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+.secret-btn {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: 5px;
+    cursor: pointer;
+    border-color: #f4f4f4;
+    border: 0;
+}
+.credits {
+    margin-top: 20px;
+}
+
+.credits ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.credits li {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.interactive-section {
+    margin-top: 40px;
+}
+
+.interactive-section button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.interactive-section button:hover {
+    background-color: #0056b3;
+}
+
+#surpriseMessage {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+}
+.start {
+    background-color: rgb(26, 26, 26);
+    color: white;
+    text-align: center;
+}
