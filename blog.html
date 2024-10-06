@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5FF3Y41LMX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5FF3Y41LMX');
+</script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="#">Maxer.digital</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html">About Me</a></li>
+                    <li><a href="index.html">My Projetcs</a></li>
+                    <li><a href="https://github.com/UnknownDevPro">Github</a></li>
+                    <li><a href="blog.html">Past Events</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <br>
+    <p> </p>
+    <section id="past-events" class="events-section">
+        <br>
+        <h2 style="text-align: center;font-size: 50px;">Past Events</h2>
+      
+        <!-- Add more events here -->
+      </section>
+      <div id="event-list"></div>
+
+<script>
+const events = [
+  { name: "Favorite Pokemon Reveal.", date: "10/7/2024", description: "Users must shocase there favorite pokemon and recreate it with any tool.", attendes: "N/A", status: "🟡 Pending", host: "Mau" },
+  { name: "AI art challenge", date: "10/5/2024", description: "Users must use AI to create art.", attendes: "3", status: "🔴 Concluded", host: "Mau" },
+  { name: "All style art challenge.", date: "10/5/2024", description: "Users can use all sorts of programs except AI", attendes: "3", status: "🔴 Concluded", host: "Mau" },
+  { name: "Pixel Art Challenge", date: "10/5/2024", description: "Users Must used Pixilart program to create a pixel art.", attendes: "4", status: "🔴 Concluded", host: "Mau" },
+
+];
+
+const eventList = document.getElementById('event-list');
+
+events.forEach(event => {
+  const eventDiv = document.createElement('div');
+  eventDiv.className = 'event';
+  eventDiv.innerHTML = `
+    <h3>${event.name}</h3>
+    <p>Date: ${event.date}</p>
+    <p>${event.description}</p>
+    <p>Attendes: ${event.attendes}</p>
+    <p>Status: ${event.status}</p>
+    <p>Host: ${event.host}</p>
+
+
+  `;
+  eventList.appendChild(eventDiv);
+});
+</script>
+
+      
+</body>
+</html>
