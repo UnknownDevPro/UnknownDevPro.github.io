@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle Game</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to CSS file -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Riddle Game</h1>
+        </header>
+        <main>
+            <div class="riddle-container">
+                <p id="riddle-text" class="riddle-text"></p>
+                <input type="text" id="answer-input" placeholder="Your answer..." class="answer-input">
+                <button id="submit-answer" class="button">Submit</button>
+                <div id="feedback" class="feedback"></div>
+                <button id="next-riddle" class="button" style="display: none;">Next Riddle</button>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Riddle Game</p>
+        </footer>
+    </div>
+    <script src="script.js"></script> <!-- Link to JS file -->
+</body>
+</html>
