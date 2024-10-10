@@ -71,3 +71,24 @@ footer {
     font-size: 0.9em;
     color: #6a737d; /* Lighter text color for footer */
 }
+/* Button for mobile users to reveal secret input */
+.secret-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.5; /* This makes the button semi-transparent */
+}
+
+.secret-btn:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+.hidden {
+    display: none;
+}
+
+/* Other CSS rules for the game... */
