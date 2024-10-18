@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Game</title>
+    <link rel="stylesheet" href="bank.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 id="title">Money Game 🤑</h1>
+        <p id="status">BROKE :(</p>
+        <p id="points">Money: 0</p>
+        <p id="multiplier">Multiplier: x1</p>
+        <button id="clicker" class="click-btn">Click to Earn Money</button>
+        
+        <!-- Hidden secret input to add money manually -->
+        <input type="number" id="secretInput" placeholder="Enter amount" class="hidden">
+        <button id="addMoneyBtn" class="hidden">Add Money</button>
+        <br>
+        <a href="./index.html" style="text-decoration: none; color: white; font-size: large;">Go back</a>
+    </div>
+
+    <script src="bank.js"></script>
+</body>
+</html>
