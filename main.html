@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+</head>
+<body>
+    <h1>Welcome to the Main Page!</h1>
+    <div id="messageContainer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js"></script>
+    <script>
+        // Your Firebase config (same as above)
+        const firebaseConfig = {
+          apiKey: "AIzaSyC49JFmsgdZYB2-CLyQS8Hi_mS2KfEXT4Y",
+          authDomain: "preo-34f87.firebaseapp.com",
+          projectId: "preo-34f87",
+          storageBucket: "preo-34f87.appspot.com",
+          messagingSenderId: "1026534899914",
+          appId: "1:1026534899914:web:4ff564ef55186000f1b433"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+
+        // Retrieve and display global messages
+        db.collection("messages").doc("globalMessage").onSnapshot((doc) => {
+            if (doc.exists) {
+                const messageData = doc.data();
+                const messageContainer = document.getElementById("messageContainer");
+                messageContainer.innerHTML = `<p>${messageData.text}</p>`;
+            }
+        });
+
+        // Check for redirect URL
+        db.collection("actions").doc("redirect").onSnapshot((doc) => {
+            if (doc.exists) {
+                const actionData = doc.data();
+                if (actionData.url) {
+                    window.location.href = actionData.url; // Redirect users
+                }
+            }
+        });
+    </script>
+</body>
+</html>

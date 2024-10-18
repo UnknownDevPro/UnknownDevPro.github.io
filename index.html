@@ -5,6 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testing Website</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js";
+        import { getFirestore, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC49JFmsgdZYB2-CLyQS8Hi_mS2KfEXT4Y",
+            authDomain: "preo-34f87.firebaseapp.com",
+            projectId: "preo-34f87",
+            storageBucket: "preo-34f87.appspot.com",
+            messagingSenderId: "1026534899914",
+            appId: "1:1026534899914:web:4ff564ef55186000f1b433"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to display messages
+        function displayMessage(message, duration) {
+            const messageDiv = document.createElement("div");
+            messageDiv.textContent = message;
+            messageDiv.style.backgroundColor = "grey";
+            messageDiv.style.padding = "10px";
+            messageDiv.style.position = "fixed";
+            messageDiv.style.top = "10px";
+            messageDiv.style.right = "10px";
+            messageDiv.style.zIndex = "1000";
+            document.body.appendChild(messageDiv);
+
+            // Remove message after the specified duration
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, duration);
+        }
+
+        // Listen for messages
+        onSnapshot(doc(db, "messages", "globalMessage"), (doc) => {
+            const data = doc.data();
+            if (data) {
+                displayMessage(data.text, data.duration);
+            }
+        });
+
+        // Listen for redirects
+        onSnapshot(doc(db, "actions", "redirect"), (doc) => {
+            const data = doc.data();
+            if (data && data.url) {
+                const lastRedirect = localStorage.getItem('lastRedirectTimestamp');
+                const newTimestamp = data.timestamp.toMillis();
+
+                // Redirect only if there's a new timestamp
+                if (!lastRedirect || newTimestamp > parseInt(lastRedirect, 10)) {
+                    localStorage.setItem('lastRedirectTimestamp', newTimestamp);
+                    window.location.href = data.url; // Redirect to the specified URL
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <header class="header">
@@ -13,9 +72,7 @@
             <p>This website is for testing purposes. There is nothing here</p>
             <p><i>Want to play a Minigame?</i></p>
             <a href="mini-game.html" style="text-decoration: none; color: white; font-size: large;">Click here</a>
-            
         </div>
     </header>
-    
 </body>
 </html>

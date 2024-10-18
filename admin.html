@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js";
+        import { getFirestore, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
+
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyC49JFmsgdZYB2-CLyQS8Hi_mS2KfEXT4Y",
+            authDomain: "preo-34f87.firebaseapp.com",
+            projectId: "preo-34f87",
+            storageBucket: "preo-34f87.appspot.com",
+            messagingSenderId: "1026534899914",
+            appId: "1:1026534899914:web:4ff564ef55186000f1b433"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to send a message with a duration
+        async function sendMessage() {
+            const message = document.getElementById("messageInput").value;
+            const duration = parseInt(document.getElementById("durationInput").value, 10) || 5000; // Default to 5000 ms
+
+            try {
+                await setDoc(doc(db, "messages", "globalMessage"), {
+                    text: message,
+                    duration: duration,
+                    timestamp: serverTimestamp()
+                });
+                console.log("Message sent!");
+            } catch (error) {
+                console.error("Error sending message: ", error);
+            }
+        }
+
+        // Function to redirect users
+        async function redirectUsers() {
+            const url = document.getElementById("redirectUrl").value;
+            try {
+                await setDoc(doc(db, "actions", "redirect"), {
+                    url: url,
+                    timestamp: serverTimestamp()
+                });
+                console.log("Redirect action set!");
+            } catch (error) {
+                console.error("Error setting redirect: ", error);
+            }
+        }
+
+        // Expose functions to the global scope
+        window.sendMessage = sendMessage;
+        window.redirectUsers = redirectUsers;
+    </script>
+</head>
+<body>
+    <div>
+        <h1>Admin Panel</h1>
+        <input type="text" id="messageInput" placeholder="Enter your message here">
+        <input type="number" id="durationInput" placeholder="Duration (ms)" min="1000" value="5000">
+        <button onclick="sendMessage()">Send Message</button>
+        <button onclick="redirectUsers()">Redirect All Users</button>
+        <input type="text" id="redirectUrl" placeholder="Enter redirect URL">
+    </div>
+</body>
+</html>
