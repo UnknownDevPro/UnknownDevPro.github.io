@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="winners.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC49JFmsgdZYB2-CLyQS8Hi_mS2KfEXT4Y",
+            authDomain: "preo-34f87.firebaseapp.com",
+            projectId: "preo-34f87",
+            storageBucket: "preo-34f87.appspot.com",
+            messagingSenderId: "1026534899914",
+            appId: "1:1026534899914:web:4ff564ef55186000f1b433"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to display winners
+        async function displayWinners() {
+            const winnersRef = collection(db, "winners");
+            const winnersSnapshot = await getDocs(winnersRef);
+            const winnersList = document.getElementById("winnersList");
+
+            winnersSnapshot.forEach(doc => {
+                const winner = doc.data();
+                const listItem = document.createElement("li");
+                listItem.textContent = `Rank: ${winner.rank}, Name: ${winner.name}, Time: ${winner.time}, Notes: ${winner.notes}`;
+                winnersList.appendChild(listItem);
+            });
+        }
+
+        // Call the displayWinners function on page load
+        window.onload = displayWinners;
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Leaderboard</h1>
+        <ul id="winnersList"></ul>
+        <a href="index.html" style="text-decoration: none;">Back to Home</a>
+    </div>
+</body>
+</html>

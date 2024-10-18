@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js";
-        import { getFirestore, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
 
-        // Your Firebase config
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC49JFmsgdZYB2-CLyQS8Hi_mS2KfEXT4Y",
             authDomain: "preo-34f87.firebaseapp.com",
@@ -22,50 +23,90 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Function to send a message with a duration
+        // Function to send messages
         async function sendMessage() {
             const message = document.getElementById("messageInput").value;
-            const duration = parseInt(document.getElementById("durationInput").value, 10) || 5000; // Default to 5000 ms
+            const duration = parseInt(document.getElementById("messageDuration").value, 10) || 5000; // Default duration is 5 seconds
 
-            try {
-                await setDoc(doc(db, "messages", "globalMessage"), {
-                    text: message,
-                    duration: duration,
-                    timestamp: serverTimestamp()
-                });
-                console.log("Message sent!");
-            } catch (error) {
-                console.error("Error sending message: ", error);
-            }
+            await setDoc(doc(db, "messages", "globalMessage"), {
+                text: message,
+                duration: duration,
+                timestamp: new Date()
+            });
         }
 
         // Function to redirect users
         async function redirectUsers() {
             const url = document.getElementById("redirectUrl").value;
-            try {
-                await setDoc(doc(db, "actions", "redirect"), {
-                    url: url,
-                    timestamp: serverTimestamp()
-                });
-                console.log("Redirect action set!");
-            } catch (error) {
-                console.error("Error setting redirect: ", error);
-            }
+            await setDoc(doc(db, "actions", "redirect"), {
+                url: url,
+                timestamp: new Date()
+            });
         }
 
-        // Expose functions to the global scope
+        // Function to add a winner to the leaderboard
+        async function addWinner() {
+            const winnerName = document.getElementById("winnerName").value;
+            const winnerTime = document.getElementById("winnerTime").value;
+            const notes = document.getElementById("winnerNotes").value;
+
+            // Get the current number of winners to assign the rank
+            const winnersRef = collection(db, "winners");
+            const winnersSnapshot = await getDocs(winnersRef);
+            const rank = winnersSnapshot.size + 1; // Rank is current size + 1
+
+            // Add winner to the leaderboard
+            const winnerData = {
+                rank: rank,
+                name: winnerName,
+                time: winnerTime,
+                notes: notes,
+                timestamp: new Date()
+            };
+
+            await setDoc(doc(winnersRef, String(rank)), winnerData).then(() => {
+                alert("Winner added!");
+                document.getElementById("winnerName").value = "";
+                document.getElementById("winnerTime").value = "";
+                document.getElementById("winnerNotes").value = "";
+            });
+        }
+
+        // Function to clear all winners
+        async function clearWinners() {
+            const winnersRef = collection(db, "winners");
+            const winnersSnapshot = await getDocs(winnersRef);
+            const deletePromises = winnersSnapshot.docs.map(doc => deleteDoc(doc.ref));
+            await Promise.all(deletePromises);
+            alert("All winners cleared!");
+        }
+
+        // Assign functions to the window object to make them globally accessible
         window.sendMessage = sendMessage;
         window.redirectUsers = redirectUsers;
+        window.addWinner = addWinner;
+        window.clearWinners = clearWinners;
+
     </script>
 </head>
 <body>
-    <div>
+    <div class="container">
         <h1>Admin Panel</h1>
         <input type="text" id="messageInput" placeholder="Enter your message here">
-        <input type="number" id="durationInput" placeholder="Duration (ms)" min="1000" value="5000">
+        <input type="number" id="messageDuration" placeholder="Duration in milliseconds">
         <button onclick="sendMessage()">Send Message</button>
         <button onclick="redirectUsers()">Redirect All Users</button>
         <input type="text" id="redirectUrl" placeholder="Enter redirect URL">
+
+        <h2>Add Winner</h2>
+        <input type="text" id="winnerName" placeholder="Winner's Name">
+        <input type="text" id="winnerTime" placeholder="Time (e.g., 1:30)">
+        <textarea id="winnerNotes" placeholder="Notes"></textarea>
+        <button onclick="addWinner()">Add Winner</button>
+        <button onclick="clearWinners()">Clear Winners</button>
+
+        <h2>View Leaderboard</h2>
+        <a href="leaderboard.html" style="text-decoration: none;">Go to Leaderboard</a>
     </div>
 </body>
 </html>
