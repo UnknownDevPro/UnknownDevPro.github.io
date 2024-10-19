@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit File</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC49JFmsgdZYB2-CLyQS8Hi_mS2KfEXT4Y",
+            authDomain: "preo-34f87.firebaseapp.com",
+            projectId: "preo-34f87",
+            storageBucket: "preo-34f87.appspot.com",
+            messagingSenderId: "1026534899914",
+            appId: "1:1026534899914:web:4ff564ef55186000f1b433"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        async function submitFile() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            const uploaderName = document.getElementById("uploaderName").value;
+
+            if (!file) {
+                alert("Please select a file to upload.");
+                return;
+            }
+
+            // Upload file to Firebase Storage
+            const storageRef = ref(storage, 'uploads/' + file.name);
+            await uploadBytes(storageRef, file);
+
+            // Save file metadata to Firestore
+            await addDoc(collection(db, "files"), {
+                fileName: file.name,
+                uploader: uploaderName,
+                uploadedAt: new Date()
+            });
+
+            alert("File uploaded successfully!");
+            fileInput.value = ""; // Clear the input
+            document.getElementById("uploaderName").value = ""; // Clear uploader name
+        }
+
+        window.submitFile = submitFile;
+        
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Submit File</h1>
+        <input type="text" id="uploaderName" placeholder="Your Name">
+        <input type="file" id="fileInput">
+        <button onclick="submitFile()">Submit File</button>
+    </div>
+</body>
+</html>

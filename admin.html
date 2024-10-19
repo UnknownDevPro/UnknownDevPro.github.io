@@ -8,6 +8,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-app.js";
         import { getFirestore, doc, setDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore.js";
+        import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.4.1/firebase-storage.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -22,6 +23,7 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
         // Function to send messages
         async function sendMessage() {
@@ -81,6 +83,37 @@
             alert("All winners cleared!");
         }
 
+        // Function to display uploaded files
+        async function displayUploadedFiles() {
+            const filesRef = collection(db, "uploadedFiles");
+            const filesSnapshot = await getDocs(filesRef);
+            const filesList = document.getElementById("filesList");
+
+            filesSnapshot.forEach(async (doc) => {
+                const fileData = doc.data();
+                const fileUrl = await getDownloadURL(ref(storage, fileData.url));
+                
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <a href="${fileUrl}" target="_blank">${fileData.name}</a> - Uploaded by: ${fileData.username}
+                    <button onclick="deleteFile('${doc.id}')">Delete</button>
+                `;
+                filesList.appendChild(listItem);
+            });
+        }
+
+        // Function to delete a file
+        async function deleteFile(docId) {
+            await deleteDoc(doc(db, "uploadedFiles", docId));
+            alert("File deleted successfully!");
+            location.reload(); // Reload the page to update the file list
+        }
+
+        // Call the displayUploadedFiles function on page load
+        window.onload = async () => {
+            await displayUploadedFiles();
+        };
+
         // Assign functions to the window object to make them globally accessible
         window.sendMessage = sendMessage;
         window.redirectUsers = redirectUsers;
@@ -107,6 +140,10 @@
 
         <h2>View Leaderboard</h2>
         <a href="leaderboard.html" style="text-decoration: none;">Go to Leaderboard</a>
+
+        <h2>Uploaded Files</h2>
+        <ul id="filesList"></ul>
+        <a href="https://console.firebase.google.com/project/preo-34f87/storage/preo-34f87.appspot.com/files/~2Fuploads" style="text-decoration: none;">Go to Submit Page</a>
     </div>
 </body>
 </html>
